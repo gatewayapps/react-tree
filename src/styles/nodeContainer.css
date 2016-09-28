@@ -1,0 +1,33 @@
+.react-tree-node-toggle{
+  float:left;
+}
+.react-tree-node-children{
+  padding-left:15px;
+}
+
+.react-tree-node-actions{
+  float:right;
+}
+.react-tree-node-title{
+  margin-left:5px;
+  float:left;
+
+}
+.react-tree-node-header .react-tree-node-actions{
+  visibility: hidden;
+  position:absolute;
+  top:0px;
+  right:0px;
+}
+.react-tree-node-header{
+  position:relative;
+    padding-top: 3px;
+  padding-bottom:3px;
+}
+.react-tree-node-header:hover{
+  background-color:#E0E0E0;
+}
+.react-tree-node-header:hover .react-tree-node-actions{
+  background-color:rgba(0.9,0.9,0.9);
+  visibility: visible;
+}
