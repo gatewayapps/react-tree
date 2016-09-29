@@ -1,5 +1,8 @@
 .react-tree-node-toggle{
-  float:left;
+  display:inline;
+}
+.react-tree-node-toggle:active{
+  border-width:0px;
 }
 .react-tree-node-children{
   padding-left:15px;
@@ -7,11 +10,16 @@
 
 .react-tree-node-actions{
   float:right;
+    background-color:rgba(230,230,230,0.8)
 }
-.react-tree-node-title{
-  margin-left:5px;
-  float:left;
 
+.react-tree-node-title{
+ white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis; 
+    max-width:100%;
+    width:100%;
+    display:inline;
 }
 .react-tree-node-header .react-tree-node-actions{
   visibility: hidden;
@@ -20,9 +28,19 @@
   right:0px;
 }
 .react-tree-node-header{
+  background-color: white;
+  box-sizing: content-box;
+  cursor:default;
+  width:100%;
+  display:flex;
+  border-top:2px solid transparent;
+  border-bottom:2px solid transparent;
+  overflow:hidden;
+      text-overflow:ellipsis; 
+  white-space:nowrap;
   position:relative;
-    padding-top: 3px;
-  padding-bottom:3px;
+    padding-top: 2px;
+  padding-bottom:2px;
 }
 .react-tree-node-header:hover{
   background-color:#E0E0E0;

@@ -14,7 +14,7 @@ export class Tree extends React.Component {
 
   render () {
     return (
-      <Panel style={treeStyle} header={this.props.header} >
+      <Panel style={treeStyle} className='react-tree-container' header={this.props.header} >
         {this.renderNodes() }
       </Panel>
     )
@@ -23,6 +23,8 @@ export class Tree extends React.Component {
   renderNodes () {
     console.log('in renderNodes')
     var nodes = []
+    console.log(this.props.sortFunc)
+    this.props.nodes.sort(this.props.sortFunc)
     for (var i = 0; i < this.props.nodes.length; i++) {
       nodes.push(this.renderNodeContainer(this.props.nodes[i]))
     }
@@ -35,6 +37,7 @@ export class Tree extends React.Component {
     return (
       <NodeContainer style={nodeContainerStyle}
         key={node.id}
+        sortFunc={this.props.sortFunc}
         renderNodeToggle={this.props.renderNodeToggle}
         renderNodeAction={this.props.renderNodeAction}
         renderNodeTitle={this.props.renderNodeTitle}
@@ -60,6 +63,7 @@ Tree.propTypes = {
   renderNodeToggle: React.PropTypes.func,
   renderNodeTitle: React.PropTypes.func,
   renderNodeAction: React.PropTypes.func,
+  sortFunc: React.PropTypes.func,
   renderFooter: React.PropTypes.func,
   onToggleClick: React.PropTypes.func,
   onAction: React.PropTypes.func
@@ -71,10 +75,14 @@ Tree.defaultProps = {
       <Button
         bsStyle='link'
         bsSize='small'
+        key={action}
         className='react-tree-node-action'
         onClick={() => { this.props.onAction(node, action) }}>
         <Glyphicon glyph={action.icon} />
       </Button>)
+  },
+  sortFunc: (a, b) => {
+    return a.rank - b.rank
   },
   renderNodeTitle: (node) => {
     return (
@@ -84,12 +92,20 @@ Tree.defaultProps = {
   renderNodeToggle: (node, clickHandler) => {
     if (node.children && node.children instanceof Array) {
       return (
-        <div className='react-tree-node-toggle' onClick={clickHandler}>
-          <Glyphicon glyph={node.open ? 'menu-down' : 'menu-right'} />
-        </div>
+        <Button bsSize='xsmall' bsStyle='link' className='react-tree-node-toggle' onClick={clickHandler}>
+          <Glyphicon glyph={node.open ? 'folder-open' : 'folder-close'} />
+        </Button>
       )
     } else {
-      return <div className='react-tree-node-toggle'> <Glyphicon glyph='cog' /></div>
+      return (
+        <Button
+          bsSize='xsmall'
+          bsStyle='link'
+          disabled
+          style={{ 'cursor': 'default' }}
+          className='react-tree-node-toggle'>
+          <Glyphicon glyph='cog' />
+        </Button>)
     }
   }
 }
