@@ -92,7 +92,7 @@ Tree.defaultProps = {
     )
   },
   onDropNode: (source, newParent, rank) => {
-
+    console.log(source)
   },
   renderNodeToggle: (node, clickHandler) => {
     if (node.children && node.children instanceof Array) {
