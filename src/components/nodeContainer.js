@@ -162,6 +162,7 @@ NodeContainer.propTypes = {
   sortFunc: React.PropTypes.func.isRequired,
   onToggleClick: React.PropTypes.func,
   node: React.PropTypes.object.isRequired,
+  onDropNode: React.PropTypes.func.isRequired,
   style: React.PropTypes.object
 }
 

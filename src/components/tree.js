@@ -38,6 +38,7 @@ export class Tree extends React.Component {
       <NodeContainer style={nodeContainerStyle}
         key={node.id}
         sortFunc={this.props.sortFunc}
+        onDropNode={this.props.onDropNode}
         renderNodeToggle={this.props.renderNodeToggle}
         renderNodeAction={this.props.renderNodeAction}
         renderNodeTitle={this.props.renderNodeTitle}
@@ -63,6 +64,7 @@ Tree.propTypes = {
   renderNodeToggle: React.PropTypes.func,
   renderNodeTitle: React.PropTypes.func,
   renderNodeAction: React.PropTypes.func,
+  onDropNode: React.PropTypes.func,
   sortFunc: React.PropTypes.func,
   renderFooter: React.PropTypes.func,
   onToggleClick: React.PropTypes.func,
@@ -88,6 +90,9 @@ Tree.defaultProps = {
     return (
       <div className='react-tree-node-title'>{node.title}</div>
     )
+  },
+  onDropNode: (source, newParent, rank) => {
+
   },
   renderNodeToggle: (node, clickHandler) => {
     if (node.children && node.children instanceof Array) {
