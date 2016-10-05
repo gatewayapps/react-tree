@@ -80,7 +80,7 @@ const Example = React.createClass({
     const header = <Label>Hello!</Label>
     return <div style={{ 'maxWidth': '300px' }}><Tree nodes={nodes}
       header={header}
-      isEditable={false}
+      isEditable
       onToggleClick={(node) => {
         toggleNodeOpen(node.id)
         this.forceUpdate()

@@ -37,6 +37,7 @@ export class Tree extends React.Component {
     return (
       <NodeContainer style={nodeContainerStyle}
         key={node.id}
+        isEditable={this.props.isEditable}
         sortFunc={this.props.sortFunc}
         onDropNode={this.props.onDropNode}
         renderNodeToggle={this.props.renderNodeToggle}
@@ -92,7 +93,10 @@ Tree.defaultProps = {
     )
   },
   onDropNode: (source, newParent, rank) => {
+    console.log('In onDropNode')
     console.log(source)
+    console.log(newParent)
+    console.log(rank)
   },
   renderNodeToggle: (node, clickHandler) => {
     if (node.children && node.children instanceof Array) {

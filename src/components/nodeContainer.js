@@ -40,30 +40,50 @@ export class NodeContainer extends React.Component {
           }
       }
     }
-    console.log(headerStyle)
-    return (
-      <div
-        style={this.props.style}
-        data-id={this.props.node.id}
-        className='react-tree-node-container'
-        key={this.props.node.id}>
+    if (this.props.isEditable) {
+      return (
         <div
-          className='react-tree-node-header'
-          draggable
-          style={headerStyle}
-          onDragStart={(e) => { this.onDragStart(e) }}
-          onDragLeave={(e) => { this.onDragLeave(e) }}
-          onDragOver={(e) => { this.onDragOver(e) }}
-          onDrop={(e) => { this.onDrop(e) }}
-          title={this.props.node.title}>
-          {this.props.renderNodeToggle(this.props.node, () => { this.onClickToggle() }) }
-          {this.props.renderNodeTitle(this.props.node) }
-          {this.renderActions() }
-          <Clearfix />
+          style={this.props.style}
+          data-id={this.props.node.id}
+          className='react-tree-node-container'
+          key={this.props.node.id}>
+          <div
+            className='react-tree-node-header'
+            draggable
+            style={headerStyle}
+            onDragStart={(e) => { this.onDragStart(e) }}
+            onDragLeave={(e) => { this.onDragLeave(e) }}
+            onDragOver={(e) => { this.onDragOver(e) }}
+            onDrop={(e) => { this.onDrop(e) }}
+            title={this.props.node.title}>
+            {this.props.renderNodeToggle(this.props.node, () => { this.onClickToggle() }) }
+            {this.props.renderNodeTitle(this.props.node) }
+            {this.renderActions() }
+            <Clearfix />
+          </div>
+          {this.renderChildren()}
         </div>
-        {this.renderChildren()}
-      </div>
     )
+    } else {
+      return (
+        <div
+          style={this.props.style}
+          data-id={this.props.node.id}
+          className='react-tree-node-container'
+          key={this.props.node.id}>
+          <div
+            className='react-tree-node-header'
+            style={headerStyle}
+            title={this.props.node.title}>
+            {this.props.renderNodeToggle(this.props.node, () => { this.onClickToggle() }) }
+            {this.props.renderNodeTitle(this.props.node) }
+            {this.renderActions() }
+            <Clearfix />
+          </div>
+          {this.renderChildren()}
+        </div>
+      )
+    }
   }
 
   onDragLeave (e) {
@@ -71,8 +91,19 @@ export class NodeContainer extends React.Component {
   }
 
   onDrop (e) {
+    var pos = this.state.dragPosition
+    var rank = this.props.node.rank
+    if (pos === 'below') {
+      rank++
+    }
+    var data = e.dataTransfer.getData('text/plain')
+    console.log(data)
+    var obj = JSON.parse(data)
+    console.log(obj)
+
+    this.props.onDropNode(obj, this.props.parentId, rank)
+
     this.setState({ dragPosition: undefined })
-    console.log(e)
   }
 
   onClickToggle () {
@@ -126,8 +157,11 @@ export class NodeContainer extends React.Component {
       for (var i = 0; i < this.props.node.children.length; i++) {
         children.push(
           <NodeContainer style={this.props.style}
+            parentId={this.props.node.id}
+            isEditable={this.props.isEditable}
             key={this.props.node.children[i].id}
             sortFunc={this.props.sortFunc}
+            onDropNode={this.props.onDropNode}
             renderNodeToggle={this.props.renderNodeToggle}
             renderNodeAction={this.props.renderNodeAction}
             renderNodeTitle={this.props.renderNodeTitle}
@@ -159,7 +193,9 @@ NodeContainer.propTypes = {
   renderNodeToggle: React.PropTypes.func.isRequired,
   renderNodeTitle: React.PropTypes.func.isRequired,
   renderNodeAction: React.PropTypes.func.isRequired,
+  parentId: React.PropTypes.string,
   sortFunc: React.PropTypes.func.isRequired,
+  isEditable: React.PropTypes.bool,
   onToggleClick: React.PropTypes.func,
   node: React.PropTypes.object.isRequired,
   onDropNode: React.PropTypes.func.isRequired,
