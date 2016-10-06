@@ -15,15 +15,13 @@ var _reactBootstrap = require('react-bootstrap');
 
 var _nodeContainer = require('./nodeContainer');
 
-var _nodeContainer2 = _interopRequireDefault(_nodeContainer);
-
 var _tree = require('../styles/tree.css');
 
 var _tree2 = _interopRequireDefault(_tree);
 
-var _nodeContainer3 = require('../styles/nodeContainer.css');
+var _nodeContainer2 = require('../styles/nodeContainer.css');
 
-var _nodeContainer4 = _interopRequireDefault(_nodeContainer3);
+var _nodeContainer3 = _interopRequireDefault(_nodeContainer2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36,10 +34,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Tree = exports.Tree = function (_React$Component) {
   _inherits(Tree, _React$Component);
 
-  function Tree() {
+  function Tree(props) {
     _classCallCheck(this, Tree);
 
-    return _possibleConstructorReturn(this, (Tree.__proto__ || Object.getPrototypeOf(Tree)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (Tree.__proto__ || Object.getPrototypeOf(Tree)).call(this, props));
+
+    props.renderNodeToggle.bind(_this);
+    return _this;
   }
 
   _createClass(Tree, [{
@@ -47,14 +48,17 @@ var Tree = exports.Tree = function (_React$Component) {
     value: function render() {
       return _react2.default.createElement(
         _reactBootstrap.Panel,
-        { style: _tree2.default, header: this.props.header },
+        { style: _tree2.default, className: 'react-tree-container', header: this.props.header },
         this.renderNodes()
       );
     }
   }, {
     key: 'renderNodes',
     value: function renderNodes() {
+      console.log('in renderNodes');
       var nodes = [];
+      console.log(this.props.sortFunc);
+      this.props.nodes.sort(this.props.sortFunc);
       for (var i = 0; i < this.props.nodes.length; i++) {
         nodes.push(this.renderNodeContainer(this.props.nodes[i]));
       }
@@ -63,11 +67,23 @@ var Tree = exports.Tree = function (_React$Component) {
   }, {
     key: 'renderNodeContainer',
     value: function renderNodeContainer(node) {
-      return _react2.default.createElement(_nodeContainer2.default, { style: _nodeContainer4.default,
+      console.log('in renderNodeContainer');
+      console.log(_nodeContainer.NodeContainer);
+      return _react2.default.createElement(_nodeContainer.NodeContainer, { style: _nodeContainer3.default,
+        key: node.id,
+        isEditable: this.props.isEditable,
+        sortFunc: this.props.sortFunc,
+        onDropNode: this.props.onDropNode,
         renderNodeToggle: this.props.renderNodeToggle,
         renderNodeAction: this.props.renderNodeAction,
         renderNodeTitle: this.props.renderNodeTitle,
+        onToggleClick: this.props.onToggleClick,
         node: node });
+    }
+  }, {
+    key: 'toggleClickHandler',
+    value: function toggleClickHandler(node) {
+      this.props.onToggleClick(node);
     }
   }]);
 
@@ -78,12 +94,15 @@ Tree.propTypes = {
   nodes: _react2.default.PropTypes.array.isRequired,
   sortKey: _react2.default.PropTypes.string,
   filter: _react2.default.PropTypes.string,
-  editable: _react2.default.PropTypes.boolean,
+  isEditable: _react2.default.PropTypes.bool,
   header: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.string, _react2.default.PropTypes.element]),
   renderNodeToggle: _react2.default.PropTypes.func,
   renderNodeTitle: _react2.default.PropTypes.func,
   renderNodeAction: _react2.default.PropTypes.func,
+  onDropNode: _react2.default.PropTypes.func,
+  sortFunc: _react2.default.PropTypes.func,
   renderFooter: _react2.default.PropTypes.func,
+  onToggleClick: _react2.default.PropTypes.func,
   onAction: _react2.default.PropTypes.func
 };
 
@@ -93,13 +112,17 @@ Tree.defaultProps = {
       _reactBootstrap.Button,
       {
         bsStyle: 'link',
-        bsSize: 'xssmall',
+        bsSize: 'small',
+        key: action,
         className: 'react-tree-node-action',
         onClick: function onClick() {
           undefined.props.onAction(node, action);
         } },
       _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: action.icon })
     );
+  },
+  sortFunc: function sortFunc(a, b) {
+    return a.rank - b.rank;
   },
   renderNodeTitle: function renderNodeTitle(node) {
     return _react2.default.createElement(
@@ -108,11 +131,30 @@ Tree.defaultProps = {
       node.title
     );
   },
-  renderNodeToggle: function renderNodeToggle(node) {
-    return _react2.default.createElement(
-      'div',
-      { className: 'react-tree-node-toggle' },
-      _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: node.open ? 'triangle-down' : 'triangle-right' })
-    );
+  onDropNode: function onDropNode(source, newParent, rank) {
+    console.log('In onDropNode');
+    console.log(source);
+    console.log(newParent);
+    console.log(rank);
+  },
+  renderNodeToggle: function renderNodeToggle(node, clickHandler) {
+    if (node.children && node.children instanceof Array) {
+      return _react2.default.createElement(
+        _reactBootstrap.Button,
+        { bsSize: 'xsmall', bsStyle: 'link', className: 'react-tree-node-toggle', onClick: clickHandler },
+        _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: node.open ? 'folder-open' : 'folder-close' })
+      );
+    } else {
+      return _react2.default.createElement(
+        _reactBootstrap.Button,
+        {
+          bsSize: 'xsmall',
+          bsStyle: 'link',
+          disabled: true,
+          style: { 'cursor': 'default' },
+          className: 'react-tree-node-toggle' },
+        _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'cog' })
+      );
+    }
   }
 };

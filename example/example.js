@@ -74,13 +74,30 @@ function toggleNodeOpen (id, localNodes = nodes) {
   }
 }
 
+function setNodeActive (id, localNodes = nodes) {
+  for (var i = 0; i < localNodes.length; i++) {
+    if (localNodes[i].id === id) {
+      localNodes[i].active = true
+    } else {
+      localNodes[i].active = false
+    }
+    if (localNodes[i].children !== undefined) {
+      setNodeActive(id, localNodes[i].children)
+    }
+  }
+}
+
 const Example = React.createClass({
 
   render () {
-    const header = <Label>Hello!</Label>
-    return <div style={{ 'maxWidth': '300px' }}><Tree nodes={nodes}
+    const header = <Label><input ref='filter' onChange={(e) => { this.refs.exampleTree.setFilter(this.refs.filter.value) }} type='text' /></Label>
+    return <div style={{ 'maxWidth': '300px' }}><Tree ref='exampleTree' nodes={nodes}
       header={header}
       isEditable
+      onNodeClick={(node) => {
+        setNodeActive(node.id)
+        this.forceUpdate()
+      }}
       onToggleClick={(node) => {
         toggleNodeOpen(node.id)
         this.forceUpdate()

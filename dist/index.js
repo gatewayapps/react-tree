@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
-var Tree = require('./components/tree')
-module.exports = Tree
+var Tree = require('./components/tree');
+module.exports = Tree;

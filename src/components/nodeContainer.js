@@ -20,6 +20,10 @@ export class NodeContainer extends React.Component {
   }
 
   render () {
+    if (this.props.node.hidden) {
+      return <span />
+    }
+
     var headerStyle = {}
     if (this.state && this.state.dragPosition) {
       switch (this.state.dragPosition) {
@@ -40,6 +44,7 @@ export class NodeContainer extends React.Component {
           }
       }
     }
+    console.log('Node Active: ' + this.props.node.active)
     if (this.props.isEditable) {
       return (
         <div
@@ -49,8 +54,11 @@ export class NodeContainer extends React.Component {
           key={this.props.node.id}>
           <div
             className='react-tree-node-header'
+            ref={node => node && node.setAttribute('active', this.props.node.active ? 'active' : 'false')}
+            onClick={(e) => { if (e.target.nodeName === 'DIV') { this.props.onNodeClick(this.props.node) } }}
             draggable
             style={headerStyle}
+
             onDragStart={(e) => { this.onDragStart(e) }}
             onDragLeave={(e) => { this.onDragLeave(e) }}
             onDragOver={(e) => { this.onDragOver(e) }}
@@ -72,6 +80,7 @@ export class NodeContainer extends React.Component {
           className='react-tree-node-container'
           key={this.props.node.id}>
           <div
+            active={this.props.node.active ? 'active' : 'false'}
             className='react-tree-node-header'
             style={headerStyle}
             title={this.props.node.title}>
@@ -158,10 +167,12 @@ export class NodeContainer extends React.Component {
         children.push(
           <NodeContainer style={this.props.style}
             parentId={this.props.node.id}
+            tree={this.props.tree}
             isEditable={this.props.isEditable}
             key={this.props.node.children[i].id}
             sortFunc={this.props.sortFunc}
             onDropNode={this.props.onDropNode}
+            onNodeClick={this.props.onNodeClick}
             renderNodeToggle={this.props.renderNodeToggle}
             renderNodeAction={this.props.renderNodeAction}
             renderNodeTitle={this.props.renderNodeTitle}
@@ -192,7 +203,10 @@ export class NodeContainer extends React.Component {
 NodeContainer.propTypes = {
   renderNodeToggle: React.PropTypes.func.isRequired,
   renderNodeTitle: React.PropTypes.func.isRequired,
+  tree: React.PropTypes.element.isRequired,
+  hidden: React.PropTypes.bool,
   renderNodeAction: React.PropTypes.func.isRequired,
+  onNodeClick: React.PropTypes.func,
   parentId: React.PropTypes.string,
   sortFunc: React.PropTypes.func.isRequired,
   isEditable: React.PropTypes.bool,

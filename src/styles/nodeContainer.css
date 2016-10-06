@@ -10,7 +10,8 @@
 
 .react-tree-node-actions{
   float:right;
-    background-color:rgba(230,230,230,0.8)
+  border-radius:4px;
+    background-color:rgba(200,200,200,0.8)
 }
 
 .react-tree-node-title{
@@ -20,6 +21,9 @@
     max-width:100%;
     width:100%;
     display:inline;
+}
+.react-tree-node-header[active="active"],.react-tree-node-header[active="active"]:hover{
+  background-color:#D0D0D0;
 }
 .react-tree-node-header .react-tree-node-actions{
   visibility: hidden;
