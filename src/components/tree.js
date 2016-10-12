@@ -9,7 +9,14 @@ export class Tree extends React.Component {
 
   constructor (props) {
     super(props)
+    this.state = {}
     props.renderNodeToggle.bind(this)
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (this.state.filter && this.state.filter.length > 0) {
+      this._applyFilter(this.state.filter.toLowerCase(), nextProps.nodes)
+    }
   }
 
   render () {

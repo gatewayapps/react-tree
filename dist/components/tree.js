@@ -76,7 +76,7 @@ var Tree = exports.Tree = function (_React$Component) {
     value: function _childrenMatch(filter, node) {
       if (node.children && node.children instanceof Array) {
         for (var i = 0; i < node.children.length; i++) {
-          if (node.children[i].title.toLowerCase().indexOf(filter) > -1) {
+          if (node.children[i][this.props.titlePropertyPath].toLowerCase().indexOf(filter) > -1) {
             return true;
           } else if (this._childrenMatch(filter, node.children[i])) {
             return true;
@@ -89,7 +89,7 @@ var Tree = exports.Tree = function (_React$Component) {
     key: '_applyFilter',
     value: function _applyFilter(filter, nodes) {
       for (var i = 0; i < nodes.length; i++) {
-        if (nodes[i].title.toLowerCase().indexOf(filter) > -1) {
+        if (nodes[i][this.props.titlePropertyPath].toLowerCase().indexOf(filter) > -1) {
           // THIS NODE MATCHES
           nodes[i].hidden = false;
 
@@ -148,7 +148,8 @@ Tree.propTypes = {
   sortFunc: _react2.default.PropTypes.func,
   renderFooter: _react2.default.PropTypes.func,
   onToggleClick: _react2.default.PropTypes.func,
-  onAction: _react2.default.PropTypes.func
+  onAction: _react2.default.PropTypes.func,
+  titlePropertyPath: _react2.default.PropTypes.string
 };
 
 Tree.defaultProps = {
@@ -166,6 +167,7 @@ Tree.defaultProps = {
       _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: action.icon })
     );
   },
+  titlePropertyPath: 'title',
   sortFunc: function sortFunc(a, b) {
     return a.rank - b.rank;
   },
