@@ -71,7 +71,7 @@ var NodeContainer = exports.NodeContainer = function (_React$Component) {
             }
         }
       }
-      console.log('Node Active: ' + this.props.node.active);
+      // console.log('Node Active: ' + this.props.node.active)
       if (this.props.isEditable) {
         return _react2.default.createElement(
           'div',
@@ -157,9 +157,9 @@ var NodeContainer = exports.NodeContainer = function (_React$Component) {
         rank++;
       }
       var data = e.dataTransfer.getData('text/plain');
-      console.log(data);
+      // console.log(data)
       var obj = JSON.parse(data);
-      console.log(obj);
+      // console.log(obj)
 
       this.props.onDropNode(obj, this.props.parentId, rank);
 
@@ -173,7 +173,7 @@ var NodeContainer = exports.NodeContainer = function (_React$Component) {
   }, {
     key: 'onDragStart',
     value: function onDragStart(e) {
-      console.log('dragging');
+      // console.log('dragging')
       this.props.node.open = false;
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.setData('text/plain', JSON.stringify(this.props.node));

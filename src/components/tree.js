@@ -40,7 +40,7 @@ export class Tree extends React.Component {
   _childrenMatch (filter, node) {
     if (node.children && node.children instanceof Array) {
       for (var i = 0; i < node.children.length; i++) {
-        if (node.children[i].title.toLowerCase().indexOf(filter) > -1) {
+        if (node.children[i][this.props.titlePropertyPath].toLowerCase().indexOf(filter) > -1) {
           return true
         } else if (this._childrenMatch(filter, node.children[i])) {
           return true
@@ -52,7 +52,7 @@ export class Tree extends React.Component {
 
   _applyFilter (filter, nodes) {
     for (var i = 0; i < nodes.length; i++) {
-      if (nodes[i].title.toLowerCase().indexOf(filter) > -1) {
+      if (nodes[i][this.props.titlePropertyPath].toLowerCase().indexOf(filter) > -1) {
         // THIS NODE MATCHES
         nodes[i].hidden = false
 
@@ -111,7 +111,8 @@ Tree.propTypes = {
   sortFunc: React.PropTypes.func,
   renderFooter: React.PropTypes.func,
   onToggleClick: React.PropTypes.func,
-  onAction: React.PropTypes.func
+  onAction: React.PropTypes.func,
+  titlePropertyPath: React.PropTypes.string
 }
 
 Tree.defaultProps = {
@@ -126,6 +127,7 @@ Tree.defaultProps = {
         <Glyphicon glyph={action.icon} />
       </Button>)
   },
+  titlePropertyPath: 'title',
   sortFunc: (a, b) => {
     return a.rank - b.rank
   },

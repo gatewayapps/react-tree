@@ -55,9 +55,9 @@ var Tree = exports.Tree = function (_React$Component) {
   }, {
     key: 'renderNodes',
     value: function renderNodes() {
-      console.log('in renderNodes');
+      // console.log('in renderNodes')
       var nodes = [];
-      console.log(this.props.sortFunc);
+      // console.log(this.props.sortFunc)
       this.props.nodes.sort(this.props.sortFunc);
       for (var i = 0; i < this.props.nodes.length; i++) {
         nodes.push(this.renderNodeContainer(this.props.nodes[i]));
@@ -110,8 +110,8 @@ var Tree = exports.Tree = function (_React$Component) {
   }, {
     key: 'renderNodeContainer',
     value: function renderNodeContainer(node) {
-      console.log('in renderNodeContainer');
-      console.log(_nodeContainer.NodeContainer);
+      // console.log('in renderNodeContainer')
+      // console.log(NodeContainer)
       return _react2.default.createElement(_nodeContainer.NodeContainer, { style: _nodeContainer3.default,
         key: node.id,
         tree: this,
