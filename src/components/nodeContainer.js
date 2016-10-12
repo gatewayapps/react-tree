@@ -44,7 +44,7 @@ export class NodeContainer extends React.Component {
           }
       }
     }
-    console.log('Node Active: ' + this.props.node.active)
+    // console.log('Node Active: ' + this.props.node.active)
     if (this.props.isEditable) {
       return (
         <div
@@ -106,9 +106,9 @@ export class NodeContainer extends React.Component {
       rank++
     }
     var data = e.dataTransfer.getData('text/plain')
-    console.log(data)
+    // console.log(data)
     var obj = JSON.parse(data)
-    console.log(obj)
+    // console.log(obj)
 
     this.props.onDropNode(obj, this.props.parentId, rank)
 
@@ -120,7 +120,7 @@ export class NodeContainer extends React.Component {
   }
 
   onDragStart (e) {
-    console.log('dragging')
+    // console.log('dragging')
     this.props.node.open = false
     e.dataTransfer.effectAllowed = 'move'
     e.dataTransfer.setData('text/plain', JSON.stringify(this.props.node))

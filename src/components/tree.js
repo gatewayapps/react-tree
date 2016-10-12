@@ -21,9 +21,9 @@ export class Tree extends React.Component {
   }
 
   renderNodes () {
-    console.log('in renderNodes')
+    // console.log('in renderNodes')
     var nodes = []
-    console.log(this.props.sortFunc)
+    // console.log(this.props.sortFunc)
     this.props.nodes.sort(this.props.sortFunc)
     for (var i = 0; i < this.props.nodes.length; i++) {
       nodes.push(this.renderNodeContainer(this.props.nodes[i]))
@@ -72,8 +72,8 @@ export class Tree extends React.Component {
   }
 
   renderNodeContainer (node) {
-    console.log('in renderNodeContainer')
-    console.log(NodeContainer)
+    // console.log('in renderNodeContainer')
+    // console.log(NodeContainer)
     return (
       <NodeContainer style={nodeContainerStyle}
         key={node.id}
