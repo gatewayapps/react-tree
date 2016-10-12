@@ -47,6 +47,10 @@ var NodeContainer = exports.NodeContainer = function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
+      if (this.props.node.hidden) {
+        return _react2.default.createElement('span', null);
+      }
+
       var headerStyle = {};
       if (this.state && this.state.dragPosition) {
         switch (this.state.dragPosition) {
@@ -67,6 +71,7 @@ var NodeContainer = exports.NodeContainer = function (_React$Component) {
             }
         }
       }
+      console.log('Node Active: ' + this.props.node.active);
       if (this.props.isEditable) {
         return _react2.default.createElement(
           'div',
@@ -79,8 +84,17 @@ var NodeContainer = exports.NodeContainer = function (_React$Component) {
             'div',
             {
               className: 'react-tree-node-header',
+              ref: function ref(node) {
+                return node && node.setAttribute('active', _this2.props.node.active ? 'active' : 'false');
+              },
+              onClick: function onClick(e) {
+                if (e.target.nodeName === 'DIV') {
+                  _this2.props.onNodeClick(_this2.props.node);
+                }
+              },
               draggable: true,
               style: headerStyle,
+
               onDragStart: function onDragStart(e) {
                 _this2.onDragStart(e);
               },
@@ -114,6 +128,7 @@ var NodeContainer = exports.NodeContainer = function (_React$Component) {
           _react2.default.createElement(
             'div',
             {
+              active: this.props.node.active ? 'active' : 'false',
               className: 'react-tree-node-header',
               style: headerStyle,
               title: this.props.node.title },
@@ -206,10 +221,12 @@ var NodeContainer = exports.NodeContainer = function (_React$Component) {
         for (var i = 0; i < this.props.node.children.length; i++) {
           children.push(_react2.default.createElement(NodeContainer, { style: this.props.style,
             parentId: this.props.node.id,
+            tree: this.props.tree,
             isEditable: this.props.isEditable,
             key: this.props.node.children[i].id,
             sortFunc: this.props.sortFunc,
             onDropNode: this.props.onDropNode,
+            onNodeClick: this.props.onNodeClick,
             renderNodeToggle: this.props.renderNodeToggle,
             renderNodeAction: this.props.renderNodeAction,
             renderNodeTitle: this.props.renderNodeTitle,
@@ -246,7 +263,10 @@ var NodeContainer = exports.NodeContainer = function (_React$Component) {
 NodeContainer.propTypes = {
   renderNodeToggle: _react2.default.PropTypes.func.isRequired,
   renderNodeTitle: _react2.default.PropTypes.func.isRequired,
+  tree: _react2.default.PropTypes.element.isRequired,
+  hidden: _react2.default.PropTypes.bool,
   renderNodeAction: _react2.default.PropTypes.func.isRequired,
+  onNodeClick: _react2.default.PropTypes.func,
   parentId: _react2.default.PropTypes.string,
   sortFunc: _react2.default.PropTypes.func.isRequired,
   isEditable: _react2.default.PropTypes.bool,

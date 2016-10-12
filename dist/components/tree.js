@@ -65,15 +65,60 @@ var Tree = exports.Tree = function (_React$Component) {
       return nodes;
     }
   }, {
+    key: 'setFilter',
+    value: function setFilter(filter) {
+      this.setState({ filter: filter.toLowerCase() });
+      this._applyFilter(filter.toLowerCase(), this.props.nodes);
+      this.forceUpdate();
+    }
+  }, {
+    key: '_childrenMatch',
+    value: function _childrenMatch(filter, node) {
+      if (node.children && node.children instanceof Array) {
+        for (var i = 0; i < node.children.length; i++) {
+          if (node.children[i].title.toLowerCase().indexOf(filter) > -1) {
+            return true;
+          } else if (this._childrenMatch(filter, node.children[i])) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+  }, {
+    key: '_applyFilter',
+    value: function _applyFilter(filter, nodes) {
+      for (var i = 0; i < nodes.length; i++) {
+        if (nodes[i].title.toLowerCase().indexOf(filter) > -1) {
+          // THIS NODE MATCHES
+          nodes[i].hidden = false;
+
+          nodes[i].open = true;
+        } else if (this._childrenMatch(filter, nodes[i])) {
+          nodes[i].hidden = false;
+          nodes[i].open = true;
+        } else {
+          nodes[i].hidden = true;
+          nodes[i].open = false;
+        }
+
+        if (nodes[i].children) {
+          this._applyFilter(filter, nodes[i].children);
+        }
+      }
+    }
+  }, {
     key: 'renderNodeContainer',
     value: function renderNodeContainer(node) {
       console.log('in renderNodeContainer');
       console.log(_nodeContainer.NodeContainer);
       return _react2.default.createElement(_nodeContainer.NodeContainer, { style: _nodeContainer3.default,
         key: node.id,
+        tree: this,
         isEditable: this.props.isEditable,
         sortFunc: this.props.sortFunc,
         onDropNode: this.props.onDropNode,
+        onNodeClick: this.props.onNodeClick,
         renderNodeToggle: this.props.renderNodeToggle,
         renderNodeAction: this.props.renderNodeAction,
         renderNodeTitle: this.props.renderNodeTitle,
@@ -93,12 +138,12 @@ var Tree = exports.Tree = function (_React$Component) {
 Tree.propTypes = {
   nodes: _react2.default.PropTypes.array.isRequired,
   sortKey: _react2.default.PropTypes.string,
-  filter: _react2.default.PropTypes.string,
   isEditable: _react2.default.PropTypes.bool,
   header: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.string, _react2.default.PropTypes.element]),
   renderNodeToggle: _react2.default.PropTypes.func,
   renderNodeTitle: _react2.default.PropTypes.func,
   renderNodeAction: _react2.default.PropTypes.func,
+  onNodeClick: _react2.default.PropTypes.func,
   onDropNode: _react2.default.PropTypes.func,
   sortFunc: _react2.default.PropTypes.func,
   renderFooter: _react2.default.PropTypes.func,
