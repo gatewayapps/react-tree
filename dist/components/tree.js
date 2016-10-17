@@ -39,11 +39,20 @@ var Tree = exports.Tree = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Tree.__proto__ || Object.getPrototypeOf(Tree)).call(this, props));
 
+    _this.state = {};
+    _this._setFilterActual.bind(_this);
     props.renderNodeToggle.bind(_this);
     return _this;
   }
 
   _createClass(Tree, [{
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      if (this.state.filter && this.state.filter.length > 0) {
+        this._applyFilter(this.state.filter.toLowerCase(), nextProps.nodes);
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
@@ -65,11 +74,24 @@ var Tree = exports.Tree = function (_React$Component) {
       return nodes;
     }
   }, {
+    key: '_setFilterActual',
+    value: function _setFilterActual(filter) {
+      this._applyFilter(filter, this.props.nodes);
+      this.forceUpdate();
+    }
+  }, {
     key: 'setFilter',
     value: function setFilter(filter) {
+      var _this2 = this;
+
       this.setState({ filter: filter.toLowerCase() });
-      this._applyFilter(filter.toLowerCase(), this.props.nodes);
-      this.forceUpdate();
+      if (this.state.setFilterTimeout) {
+        clearTimeout(this.state.setFilterTimeout);
+      }
+
+      this.setState({ setFilterTimeout: setTimeout(function () {
+          return _this2._setFilterActual(filter.toLowerCase());
+        }, 300) });
     }
   }, {
     key: '_childrenMatch',
@@ -88,22 +110,32 @@ var Tree = exports.Tree = function (_React$Component) {
   }, {
     key: '_applyFilter',
     value: function _applyFilter(filter, nodes) {
-      for (var i = 0; i < nodes.length; i++) {
-        if (nodes[i][this.props.titlePropertyPath].toLowerCase().indexOf(filter) > -1) {
-          // THIS NODE MATCHES
-          nodes[i].hidden = false;
+      if (filter.length > 0) {
+        for (var i = 0; i < nodes.length; i++) {
+          if (nodes[i][this.props.titlePropertyPath].toLowerCase().indexOf(filter) > -1) {
+            // THIS NODE MATCHES
+            nodes[i].hidden = false;
 
-          nodes[i].open = true;
-        } else if (this._childrenMatch(filter, nodes[i])) {
-          nodes[i].hidden = false;
-          nodes[i].open = true;
-        } else {
-          nodes[i].hidden = true;
-          nodes[i].open = false;
+            nodes[i].open = true;
+          } else if (this._childrenMatch(filter, nodes[i])) {
+            nodes[i].hidden = false;
+            nodes[i].open = true;
+          } else {
+            nodes[i].hidden = true;
+            nodes[i].open = false;
+          }
+
+          if (nodes[i].children) {
+            this._applyFilter(filter, nodes[i].children);
+          }
         }
-
-        if (nodes[i].children) {
-          this._applyFilter(filter, nodes[i].children);
+      } else {
+        for (var j = 0; j < nodes.length; j++) {
+          nodes[j].hidden = false;
+          nodes[j].open = false;
+          if (nodes[j].children) {
+            this._applyFilter(filter, nodes[j].children);
+          }
         }
       }
     }

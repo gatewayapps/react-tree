@@ -10,7 +10,9 @@ export class Tree extends React.Component {
   constructor (props) {
     super(props)
     this.state = {}
+    this._setFilterActual.bind(this)
     props.renderNodeToggle.bind(this)
+    props.renderNodeAction.bind(this)
   }
 
   componentWillReceiveProps (nextProps) {
@@ -22,7 +24,7 @@ export class Tree extends React.Component {
   render () {
     return (
       <Panel style={treeStyle} className='react-tree-container' header={this.props.header} >
-        {this.renderNodes() }
+        {this.renderNodes()}
       </Panel>
     )
   }
@@ -38,10 +40,18 @@ export class Tree extends React.Component {
     return nodes
   }
 
+  _setFilterActual (filter) {
+    this._applyFilter(filter, this.props.nodes)
+    this.forceUpdate()
+  }
+
   setFilter (filter) {
     this.setState({ filter: filter.toLowerCase() })
-    this._applyFilter(filter.toLowerCase(), this.props.nodes)
-    this.forceUpdate()
+    if (this.state.setFilterTimeout) {
+      clearTimeout(this.state.setFilterTimeout)
+    }
+
+    this.setState({ setFilterTimeout: setTimeout(() => this._setFilterActual(filter.toLowerCase()), 300) })
   }
 
   _childrenMatch (filter, node) {
@@ -58,22 +68,32 @@ export class Tree extends React.Component {
   }
 
   _applyFilter (filter, nodes) {
-    for (var i = 0; i < nodes.length; i++) {
-      if (nodes[i][this.props.titlePropertyPath].toLowerCase().indexOf(filter) > -1) {
-        // THIS NODE MATCHES
-        nodes[i].hidden = false
+    if (filter.length > 0) {
+      for (var i = 0; i < nodes.length; i++) {
+        if (nodes[i][this.props.titlePropertyPath].toLowerCase().indexOf(filter) > -1) {
+          // THIS NODE MATCHES
+          nodes[i].hidden = false
 
-        nodes[i].open = true
-      } else if (this._childrenMatch(filter, nodes[i])) {
-        nodes[i].hidden = false
-        nodes[i].open = true
-      } else {
-        nodes[i].hidden = true
-        nodes[i].open = false
+          nodes[i].open = true
+        } else if (this._childrenMatch(filter, nodes[i])) {
+          nodes[i].hidden = false
+          nodes[i].open = true
+        } else {
+          nodes[i].hidden = true
+          nodes[i].open = false
+        }
+
+        if (nodes[i].children) {
+          this._applyFilter(filter, nodes[i].children)
+        }
       }
-
-      if (nodes[i].children) {
-        this._applyFilter(filter, nodes[i].children)
+    } else {
+      for (var j = 0; j < nodes.length; j++) {
+        nodes[j].hidden = false
+        nodes[j].open = false
+        if (nodes[j].children) {
+          this._applyFilter(filter, nodes[j].children)
+        }
       }
     }
   }
@@ -83,7 +103,8 @@ export class Tree extends React.Component {
     // console.log(NodeContainer)
     return (
       <NodeContainer style={nodeContainerStyle}
-        key={node.id}
+        key={node.nodeId}
+        actions={this.props.actions}
         tree={this}
         isEditable={this.props.isEditable}
         sortFunc={this.props.sortFunc}
@@ -110,6 +131,7 @@ Tree.propTypes = {
     React.PropTypes.string,
     React.PropTypes.element
   ]),
+  actions: React.PropTypes.array,
   renderNodeToggle: React.PropTypes.func,
   renderNodeTitle: React.PropTypes.func,
   renderNodeAction: React.PropTypes.func,
@@ -123,14 +145,14 @@ Tree.propTypes = {
 }
 
 Tree.defaultProps = {
-  renderNodeAction: (node, action) => {
+  renderNodeAction: (node, action, actionHandler) => {
     return (
       <Button
         bsStyle='link'
         bsSize='small'
         key={action}
         className='react-tree-node-action'
-        onClick={() => { this.props.onAction(node, action) }}>
+        onClick={actionHandler}>
         <Glyphicon glyph={action.icon} />
       </Button>)
   },

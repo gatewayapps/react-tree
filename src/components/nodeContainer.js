@@ -49,9 +49,9 @@ export class NodeContainer extends React.Component {
       return (
         <div
           style={this.props.style}
-          data-id={this.props.node.id}
+          data-id={this.props.node.nodeId}
           className='react-tree-node-container'
-          key={this.props.node.id}>
+          key={this.props.node.nodeId}>
           <div
             className='react-tree-node-header'
             ref={node => node && node.setAttribute('active', this.props.node.active ? 'active' : 'false')}
@@ -64,29 +64,29 @@ export class NodeContainer extends React.Component {
             onDragOver={(e) => { this.onDragOver(e) }}
             onDrop={(e) => { this.onDrop(e) }}
             title={this.props.node.title}>
-            {this.props.renderNodeToggle(this.props.node, () => { this.onClickToggle() }) }
-            {this.props.renderNodeTitle(this.props.node) }
-            {this.renderActions() }
+            {this.props.renderNodeToggle(this.props.node, () => { this.onClickToggle() })}
+            {this.props.renderNodeTitle(this.props.node)}
+            {this.renderActions()}
             <Clearfix />
           </div>
           {this.renderChildren()}
         </div>
-    )
+      )
     } else {
       return (
         <div
           style={this.props.style}
-          data-id={this.props.node.id}
+          data-id={this.props.node.nodeId}
           className='react-tree-node-container'
-          key={this.props.node.id}>
+          key={this.props.node.nodeId}>
           <div
             active={this.props.node.active ? 'active' : 'false'}
             className='react-tree-node-header'
             style={headerStyle}
             title={this.props.node.title}>
-            {this.props.renderNodeToggle(this.props.node, () => { this.onClickToggle() }) }
-            {this.props.renderNodeTitle(this.props.node) }
-            {this.renderActions() }
+            {this.props.renderNodeToggle(this.props.node, () => { this.onClickToggle() })}
+            {this.props.renderNodeTitle(this.props.node)}
+            {this.renderActions()}
             <Clearfix />
           </div>
           {this.renderChildren()}
@@ -166,10 +166,11 @@ export class NodeContainer extends React.Component {
       for (var i = 0; i < this.props.node.children.length; i++) {
         children.push(
           <NodeContainer style={this.props.style}
-            parentId={this.props.node.id}
+            parentId={this.props.node.nodeId}
             tree={this.props.tree}
+            actions={this.props.actions}
             isEditable={this.props.isEditable}
-            key={this.props.node.children[i].id}
+            key={this.props.node.children[i].nodeId}
             sortFunc={this.props.sortFunc}
             onDropNode={this.props.onDropNode}
             onNodeClick={this.props.onNodeClick}
@@ -185,16 +186,21 @@ export class NodeContainer extends React.Component {
   }
 
   renderActions () {
-    if (this.props.node.actions !== undefined && this.props.node.actions instanceof Array) {
+    if (this.props.actions !== undefined && this.props.actions instanceof Array) {
       var actions = []
-      for (var i = 0; i < this.props.node.actions.length; i++) {
-        actions.push(this.props.renderNodeAction(this.props.node, this.props.node.actions[i]))
+      for (var i = 0; i < this.props.actions.length; i++) {
+        var action = this.props.renderNodeAction(this.props.node, this.props.actions[i])
+        if (action !== undefined) {
+          actions.push(this.props.renderNodeAction(this.props.node, this.props.actions[i]))
+        }
       }
-      return (
-        <div className='react-tree-node-actions'>
-          {actions}
-        </div>
-      )
+      if (actions.length > 0) {
+        return (
+          <div className='react-tree-node-actions'>
+            {actions}
+          </div>
+        )
+      }
     }
   }
 
@@ -205,6 +211,7 @@ NodeContainer.propTypes = {
   renderNodeTitle: React.PropTypes.func.isRequired,
   tree: React.PropTypes.element.isRequired,
   hidden: React.PropTypes.bool,
+  actions: React.PropTypes.array,
   renderNodeAction: React.PropTypes.func.isRequired,
   onNodeClick: React.PropTypes.func,
   parentId: React.PropTypes.string,
