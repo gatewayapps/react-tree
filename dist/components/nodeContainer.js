@@ -77,9 +77,9 @@ var NodeContainer = exports.NodeContainer = function (_React$Component) {
           'div',
           {
             style: this.props.style,
-            'data-id': this.props.node.id,
+            'data-id': this.props.node.nodeId,
             className: 'react-tree-node-container',
-            key: this.props.node.id },
+            key: this.props.node.nodeId },
           _react2.default.createElement(
             'div',
             {
@@ -122,9 +122,9 @@ var NodeContainer = exports.NodeContainer = function (_React$Component) {
           'div',
           {
             style: this.props.style,
-            'data-id': this.props.node.id,
+            'data-id': this.props.node.nodeId,
             className: 'react-tree-node-container',
-            key: this.props.node.id },
+            key: this.props.node.nodeId },
           _react2.default.createElement(
             'div',
             {
@@ -220,10 +220,11 @@ var NodeContainer = exports.NodeContainer = function (_React$Component) {
         var children = [];
         for (var i = 0; i < this.props.node.children.length; i++) {
           children.push(_react2.default.createElement(NodeContainer, { style: this.props.style,
-            parentId: this.props.node.id,
+            parentId: this.props.node.nodeId,
             tree: this.props.tree,
+            actions: this.props.actions,
             isEditable: this.props.isEditable,
-            key: this.props.node.children[i].id,
+            key: this.props.node.children[i].nodeId,
             sortFunc: this.props.sortFunc,
             onDropNode: this.props.onDropNode,
             onNodeClick: this.props.onNodeClick,
@@ -243,16 +244,21 @@ var NodeContainer = exports.NodeContainer = function (_React$Component) {
   }, {
     key: 'renderActions',
     value: function renderActions() {
-      if (this.props.node.actions !== undefined && this.props.node.actions instanceof Array) {
+      if (this.props.actions !== undefined && this.props.actions instanceof Array) {
         var actions = [];
-        for (var i = 0; i < this.props.node.actions.length; i++) {
-          actions.push(this.props.renderNodeAction(this.props.node, this.props.node.actions[i]));
+        for (var i = 0; i < this.props.actions.length; i++) {
+          var action = this.props.renderNodeAction(this.props.node, this.props.actions[i]);
+          if (action !== undefined) {
+            actions.push(this.props.renderNodeAction(this.props.node, this.props.actions[i]));
+          }
         }
-        return _react2.default.createElement(
-          'div',
-          { className: 'react-tree-node-actions' },
-          actions
-        );
+        if (actions.length > 0) {
+          return _react2.default.createElement(
+            'div',
+            { className: 'react-tree-node-actions' },
+            actions
+          );
+        }
       }
     }
   }]);
@@ -265,6 +271,7 @@ NodeContainer.propTypes = {
   renderNodeTitle: _react2.default.PropTypes.func.isRequired,
   tree: _react2.default.PropTypes.element.isRequired,
   hidden: _react2.default.PropTypes.bool,
+  actions: _react2.default.PropTypes.array,
   renderNodeAction: _react2.default.PropTypes.func.isRequired,
   onNodeClick: _react2.default.PropTypes.func,
   parentId: _react2.default.PropTypes.string,

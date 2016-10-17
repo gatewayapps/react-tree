@@ -109,7 +109,7 @@ export class NodeContainer extends React.Component {
     // console.log(data)
     var obj = JSON.parse(data)
     // console.log(obj)
-
+    console.log(this.props)
     this.props.onDropNode(obj, this.props.parentId, rank)
 
     this.setState({ dragPosition: undefined })
@@ -214,7 +214,7 @@ NodeContainer.propTypes = {
   actions: React.PropTypes.array,
   renderNodeAction: React.PropTypes.func.isRequired,
   onNodeClick: React.PropTypes.func,
-  parentId: React.PropTypes.string,
+  parentId: React.PropTypes.string.isRequired,
   sortFunc: React.PropTypes.func.isRequired,
   isEditable: React.PropTypes.bool,
   onToggleClick: React.PropTypes.func,

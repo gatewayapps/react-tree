@@ -106,6 +106,7 @@ export class Tree extends React.Component {
         key={node.nodeId}
         actions={this.props.actions}
         tree={this}
+        parentId='-1'
         isEditable={this.props.isEditable}
         sortFunc={this.props.sortFunc}
         onDropNode={this.props.onDropNode}
@@ -162,7 +163,7 @@ Tree.defaultProps = {
   },
   renderNodeTitle: (node) => {
     return (
-      <div className='react-tree-node-title'>{node.title}</div>
+      <div className='react-tree-node-title'>{node.name}</div>
     )
   },
   onDropNode: (source, newParent, rank) => {

@@ -42,6 +42,7 @@ var Tree = exports.Tree = function (_React$Component) {
     _this.state = {};
     _this._setFilterActual.bind(_this);
     props.renderNodeToggle.bind(_this);
+    props.renderNodeAction.bind(_this);
     return _this;
   }
 
@@ -145,7 +146,8 @@ var Tree = exports.Tree = function (_React$Component) {
       // console.log('in renderNodeContainer')
       // console.log(NodeContainer)
       return _react2.default.createElement(_nodeContainer.NodeContainer, { style: _nodeContainer3.default,
-        key: node.id,
+        key: node.nodeId,
+        actions: this.props.actions,
         tree: this,
         isEditable: this.props.isEditable,
         sortFunc: this.props.sortFunc,
@@ -172,6 +174,7 @@ Tree.propTypes = {
   sortKey: _react2.default.PropTypes.string,
   isEditable: _react2.default.PropTypes.bool,
   header: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.string, _react2.default.PropTypes.element]),
+  actions: _react2.default.PropTypes.array,
   renderNodeToggle: _react2.default.PropTypes.func,
   renderNodeTitle: _react2.default.PropTypes.func,
   renderNodeAction: _react2.default.PropTypes.func,
@@ -185,7 +188,7 @@ Tree.propTypes = {
 };
 
 Tree.defaultProps = {
-  renderNodeAction: function renderNodeAction(node, action) {
+  renderNodeAction: function renderNodeAction(node, action, actionHandler) {
     return _react2.default.createElement(
       _reactBootstrap.Button,
       {
@@ -193,9 +196,7 @@ Tree.defaultProps = {
         bsSize: 'small',
         key: action,
         className: 'react-tree-node-action',
-        onClick: function onClick() {
-          undefined.props.onAction(node, action);
-        } },
+        onClick: actionHandler },
       _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: action.icon })
     );
   },
