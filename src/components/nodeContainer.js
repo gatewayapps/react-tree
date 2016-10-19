@@ -164,13 +164,14 @@ export class NodeContainer extends React.Component {
 
       var children = []
       for (var i = 0; i < this.props.node.children.length; i++) {
+        var node = this.props.node.children[i]
         children.push(
           <NodeContainer style={this.props.style}
             parentId={this.props.node.nodeId}
             tree={this.props.tree}
             actions={this.props.actions}
             isEditable={this.props.isEditable}
-            key={this.props.node.children[i].nodeId}
+            key={node.nodeId}
             sortFunc={this.props.sortFunc}
             onDropNode={this.props.onDropNode}
             onNodeClick={this.props.onNodeClick}
@@ -178,7 +179,7 @@ export class NodeContainer extends React.Component {
             renderNodeAction={this.props.renderNodeAction}
             renderNodeTitle={this.props.renderNodeTitle}
             onToggleClick={this.props.onToggleClick}
-            node={this.props.node.children[i]} />
+            node={node} />
         )
       }
       return (<div className='react-tree-node-children'>{children}</div>)
@@ -209,7 +210,7 @@ export class NodeContainer extends React.Component {
 NodeContainer.propTypes = {
   renderNodeToggle: React.PropTypes.func.isRequired,
   renderNodeTitle: React.PropTypes.func.isRequired,
-  tree: React.PropTypes.element.isRequired,
+  tree: React.PropTypes.object.isRequired,
   hidden: React.PropTypes.bool,
   actions: React.PropTypes.array,
   renderNodeAction: React.PropTypes.func.isRequired,

@@ -149,6 +149,7 @@ var Tree = exports.Tree = function (_React$Component) {
         key: node.nodeId,
         actions: this.props.actions,
         tree: this,
+        parentId: '-1',
         isEditable: this.props.isEditable,
         sortFunc: this.props.sortFunc,
         onDropNode: this.props.onDropNode,
@@ -208,7 +209,7 @@ Tree.defaultProps = {
     return _react2.default.createElement(
       'div',
       { className: 'react-tree-node-title' },
-      node.title
+      node.name
     );
   },
   onDropNode: function onDropNode(source, newParent, rank) {
