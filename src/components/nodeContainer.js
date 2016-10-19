@@ -62,7 +62,7 @@ export class NodeContainer extends React.Component {
             onDragStart={(e) => { this.onDragStart(e) }}
             onDragLeave={(e) => { this.onDragLeave(e) }}
             onDragOver={(e) => { this.onDragOver(e) }}
-            onDrop={(e) => { this.onDrop(e) }}
+            onDrop={this.onDrop.bind(this)}
             title={this.props.node.title}>
             {this.props.renderNodeToggle(this.props.node, () => { this.onClickToggle() })}
             {this.props.renderNodeTitle(this.props.node)}

@@ -104,9 +104,7 @@ var NodeContainer = exports.NodeContainer = function (_React$Component) {
               onDragOver: function onDragOver(e) {
                 _this2.onDragOver(e);
               },
-              onDrop: function onDrop(e) {
-                _this2.onDrop(e);
-              },
+              onDrop: this.onDrop.bind(this),
               title: this.props.node.title },
             this.props.renderNodeToggle(this.props.node, function () {
               _this2.onClickToggle();
@@ -219,12 +217,13 @@ var NodeContainer = exports.NodeContainer = function (_React$Component) {
 
         var children = [];
         for (var i = 0; i < this.props.node.children.length; i++) {
+          var node = this.props.node.children[i];
           children.push(_react2.default.createElement(NodeContainer, { style: this.props.style,
             parentId: this.props.node.nodeId,
             tree: this.props.tree,
             actions: this.props.actions,
             isEditable: this.props.isEditable,
-            key: this.props.node.children[i].nodeId,
+            key: node.nodeId,
             sortFunc: this.props.sortFunc,
             onDropNode: this.props.onDropNode,
             onNodeClick: this.props.onNodeClick,
@@ -232,7 +231,7 @@ var NodeContainer = exports.NodeContainer = function (_React$Component) {
             renderNodeAction: this.props.renderNodeAction,
             renderNodeTitle: this.props.renderNodeTitle,
             onToggleClick: this.props.onToggleClick,
-            node: this.props.node.children[i] }));
+            node: node }));
         }
         return _react2.default.createElement(
           'div',
@@ -269,7 +268,7 @@ var NodeContainer = exports.NodeContainer = function (_React$Component) {
 NodeContainer.propTypes = {
   renderNodeToggle: _react2.default.PropTypes.func.isRequired,
   renderNodeTitle: _react2.default.PropTypes.func.isRequired,
-  tree: _react2.default.PropTypes.element.isRequired,
+  tree: _react2.default.PropTypes.object.isRequired,
   hidden: _react2.default.PropTypes.bool,
   actions: _react2.default.PropTypes.array,
   renderNodeAction: _react2.default.PropTypes.func.isRequired,
