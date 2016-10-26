@@ -81,6 +81,7 @@ export class NodeContainer extends React.Component {
           key={this.props.node.nodeId}>
           <div
             active={this.props.node.active ? 'active' : 'false'}
+            onClick={(e) => { if (e.target.nodeName === 'DIV') { this.props.onNodeClick(this.props.node) } }}
             className='react-tree-node-header'
             style={headerStyle}
             title={this.props.node.title}>
