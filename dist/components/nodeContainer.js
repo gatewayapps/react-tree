@@ -127,6 +127,11 @@ var NodeContainer = exports.NodeContainer = function (_React$Component) {
             'div',
             {
               active: this.props.node.active ? 'active' : 'false',
+              onClick: function onClick(e) {
+                if (e.target.nodeName === 'DIV') {
+                  _this2.props.onNodeClick(_this2.props.node);
+                }
+              },
               className: 'react-tree-node-header',
               style: headerStyle,
               title: this.props.node.title },
