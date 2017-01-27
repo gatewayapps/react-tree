@@ -126,7 +126,9 @@ var NodeContainer = exports.NodeContainer = function (_React$Component) {
           _react2.default.createElement(
             'div',
             {
-              active: this.props.node.active ? 'active' : 'false',
+              ref: function ref(node) {
+                return node && node.setAttribute('active', _this2.props.node.active ? 'active' : 'false');
+              },
               onClick: function onClick(e) {
                 if (e.target.nodeName === 'DIV') {
                   _this2.props.onNodeClick(_this2.props.node);

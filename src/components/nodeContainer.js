@@ -216,7 +216,7 @@ NodeContainer.propTypes = {
   actions: React.PropTypes.array,
   renderNodeAction: React.PropTypes.func.isRequired,
   onNodeClick: React.PropTypes.func,
-  parentId: React.PropTypes.string.isRequired,
+  parentId: React.PropTypes.any.isRequired,
   sortFunc: React.PropTypes.func.isRequired,
   isEditable: React.PropTypes.bool,
   onToggleClick: React.PropTypes.func,
