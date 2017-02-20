@@ -37,6 +37,7 @@
   cursor:default;
   width:100%;
   display:flex;
+  align-items: 'center';
   border-top:2px solid transparent;
   border-bottom:2px solid transparent;
   overflow:hidden;
