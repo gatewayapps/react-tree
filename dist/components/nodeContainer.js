@@ -280,7 +280,7 @@ NodeContainer.propTypes = {
   actions: _react2.default.PropTypes.array,
   renderNodeAction: _react2.default.PropTypes.func.isRequired,
   onNodeClick: _react2.default.PropTypes.func,
-  parentId: _react2.default.PropTypes.string.isRequired,
+  parentId: _react2.default.PropTypes.any.isRequired,
   sortFunc: _react2.default.PropTypes.func.isRequired,
   isEditable: _react2.default.PropTypes.bool,
   onToggleClick: _react2.default.PropTypes.func,

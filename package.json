@@ -1,6 +1,6 @@
 {
   "name": "gateway-react-tree",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Stateless tree component that supports drag and drop, filtering, and custom rendering",
   "main": "dist/index.js",
   "babel": {
