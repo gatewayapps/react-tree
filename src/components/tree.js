@@ -111,6 +111,7 @@ export class Tree extends React.Component {
         sortFunc={this.props.sortFunc}
         onDropNode={this.props.onDropNode}
         onNodeClick={this.props.onNodeClick}
+        onNodeDoubleClick={this.props.onNodeDoubleClick}
         renderNodeToggle={this.props.renderNodeToggle}
         renderNodeAction={this.props.renderNodeAction}
         renderNodeTitle={this.props.renderNodeTitle}
@@ -137,6 +138,7 @@ Tree.propTypes = {
   renderNodeTitle: React.PropTypes.func,
   renderNodeAction: React.PropTypes.func,
   onNodeClick: React.PropTypes.func,
+  onNodeDoubleClick: React.PropTypes.func,
   onDropNode: React.PropTypes.func,
   sortFunc: React.PropTypes.func,
   renderFooter: React.PropTypes.func,

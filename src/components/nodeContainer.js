@@ -56,6 +56,7 @@ export class NodeContainer extends React.Component {
             className='react-tree-node-header'
             ref={node => node && node.setAttribute('active', this.props.node.active ? 'active' : 'false')}
             onClick={(e) => { if (e.target.nodeName === 'DIV') { this.props.onNodeClick(this.props.node) } }}
+            onDoubleClick={(e)=> { if (e.target.nodeName === 'DIV') {this.props.onNodeDoubleClick(this.props.node)}}}
             draggable
             style={headerStyle}
 
