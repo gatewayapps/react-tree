@@ -1,8 +1,6 @@
 'use strict'
 
 import React from 'react'
-import { Clearfix } from 'react-bootstrap'
-
 function findAncestor (el, cls) {
   while ((el = el.parentElement) && !el.classList.contains(cls));
   return el
@@ -67,7 +65,7 @@ export class NodeContainer extends React.Component {
             {this.props.renderNodeToggle(this.props.node, () => { this.onClickToggle() })}
             {this.props.renderNodeTitle(this.props.node)}
             {this.renderActions()}
-            <Clearfix />
+            <div className='clearfix' />
           </div>
           {this.renderChildren()}
         </div>
@@ -88,7 +86,7 @@ export class NodeContainer extends React.Component {
             {this.props.renderNodeToggle(this.props.node, () => { this.onClickToggle() })}
             {this.props.renderNodeTitle(this.props.node)}
             {this.renderActions()}
-            <Clearfix />
+            <div className='clearfix' />
           </div>
           {this.renderChildren()}
         </div>

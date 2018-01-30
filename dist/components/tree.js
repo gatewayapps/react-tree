@@ -133,7 +133,6 @@ var Tree = exports.Tree = function (_React$Component) {
       } else {
         for (var j = 0; j < nodes.length; j++) {
           nodes[j].hidden = false;
-          nodes[j].open = false;
           if (nodes[j].children) {
             this._applyFilter(filter, nodes[j].children);
           }

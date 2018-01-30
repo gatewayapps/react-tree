@@ -37,7 +37,7 @@
   cursor:default;
   width:100%;
   display:flex;
-  align-items: 'center';
+  align-items: center;
   border-top:2px solid transparent;
   border-bottom:2px solid transparent;
   overflow:hidden;
@@ -51,6 +51,6 @@
   background-color:#E0E0E0;
 }
 .react-tree-node-header:hover .react-tree-node-actions{
-  background-color:rgba(0.9,0.9,0.9);
+  background-color:rgba(200,200,200, 0.9);
   visibility: visible;
 }

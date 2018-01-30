@@ -1,5 +1,4 @@
 import React from 'react'
-import { Button, Glyphicon, Panel } from 'react-bootstrap'
 import { NodeContainer } from './nodeContainer'
 
 import treeStyle from '../styles/tree.css'
@@ -23,9 +22,9 @@ export class Tree extends React.Component {
 
   render () {
     return (
-      <Panel style={treeStyle} className='react-tree-container' header={this.props.header} >
+      <div style={treeStyle} className='react-tree-container' header={this.props.header} >
         {this.renderNodes()}
-      </Panel>
+      </div>
     )
   }
 
@@ -90,7 +89,6 @@ export class Tree extends React.Component {
     } else {
       for (var j = 0; j < nodes.length; j++) {
         nodes[j].hidden = false
-        nodes[j].open = false
         if (nodes[j].children) {
           this._applyFilter(filter, nodes[j].children)
         }
@@ -148,14 +146,13 @@ Tree.propTypes = {
 Tree.defaultProps = {
   renderNodeAction: (node, action, actionHandler) => {
     return (
-      <Button
-        bsStyle='link'
-        bsSize='small'
+      <button
+
         key={action}
-        className='react-tree-node-action'
+        className='react-tree-node-action btn btn-sm btn-link'
         onClick={actionHandler}>
-        <Glyphicon glyph={action.icon} />
-      </Button>)
+        <i className={`fa ${action.icon} fa-fw`} />
+      </button>)
   },
   titlePropertyPath: 'title',
   sortFunc: (a, b) => {
@@ -174,21 +171,21 @@ Tree.defaultProps = {
   },
   renderNodeToggle: (node, clickHandler) => {
     if (node.children && node.children instanceof Array) {
+      const icon = node.open ? 'fa fa-folder-open fa-fw' : 'fa fa-folder-close fa-fw'
       return (
-        <Button bsSize='xsmall' bsStyle='link' className='react-tree-node-toggle' onClick={clickHandler}>
-          <Glyphicon glyph={node.open ? 'folder-open' : 'folder-close'} />
-        </Button>
+        <button
+          className='react-tree-node-toggle btn-sm btn-link' onClick={clickHandler}>
+          < i className={icon} />
+        </button>
       )
     } else {
       return (
-        <Button
-          bsSize='xsmall'
-          bsStyle='link'
+        <button
           disabled
           style={{ 'cursor': 'default' }}
-          className='react-tree-node-toggle'>
-          <Glyphicon glyph='cog' />
-        </Button>)
+          className='react-tree-node-toggle btn btn-sm btn-link'>
+          <i className='fa fa-cog fa-fw' />
+        </button>)
     }
   }
 }
